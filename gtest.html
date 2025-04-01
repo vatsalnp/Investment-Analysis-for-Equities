@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization Charts</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        .chart-container {
+            width: 600px;
+            height: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .chart-container + .chart-container {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container" id="columnChart"></div>
+    <div class="chart-container" id="barChart"></div>
+    <div class="chart-container" id="lineChart"></div>
+    <div class="chart-container" id="pieChart"></div>
+    <div class="chart-container" id="stackedColumnChart"></div>
+    <div class="chart-container" id="donutChart"></div>
+    <div class="chart-container" id="geochart"></div>
+
+    <script>
+        google.charts.load('current', {'packages':['corechart','geochart']
+        });
+        google.charts.setOnLoadCallback(drawCharts);    
+        const data = {
+            categories: ["Jan", "Feb", "Mar", "Apr", "May"],
+            values: [30, 45, 25, 60, 40],
+            values2: [20, 35, 15, 50, 30]
+        };
+        function drawCharts() {
+            // 1. Column Chart - Shows data as vertical bars
+            const columnData = new google.visualization.DataTable();
+            // Define the columns in your data
+            columnData.addColumn('string', 'Month');
+            columnData.addColumn('number', 'Value');
+            // Add the actual data rows
+            columnData.addRows(data.categories.map((category, index) => [category, data.values[index]]));
+
+            // Create and draw the column chart
+            const columnChart = new google.visualization.ColumnChart(document.getElementById('columnChart'));
+            columnChart.draw(columnData, {
+                title: 'Column Chart'
+            });
+
+            // 2. Bar Chart - Shows data as horizontal bars
+            const barChart = new google.visualization.BarChart(document.getElementById('barChart'));
+            barChart.draw(columnData, {
+                title: 'Bar Chart'
+            });
+
+            // 3. Line Chart - Shows data as connected points
+            const lineChart = new google.visualization.LineChart(document.getElementById('lineChart'));
+            lineChart.draw(columnData, {
+                title: 'Line Chart'
+            });
+
+            // 4. Pie Chart - Shows data as parts of a circle
+            const pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
+            pieChart.draw(columnData, {
+                title: 'Pie Chart'
+            });
+
+            // 5. Stacked Column Chart - Shows multiple series stacked on top of each other
+            const stackedData = new google.visualization.DataTable();
+            // Define the columns for stacked data
+            stackedData.addColumn('string', 'Month');
+            stackedData.addColumn('number', 'Series 1');
+            stackedData.addColumn('number', 'Series 2');
+            // Add the actual data rows
+            stackedData.addRows(data.categories.map((category, index) => [
+                category,
+                data.values[index],
+                data.values2[index]
+            ]));
+
+            // Create and draw the stacked column chart
+            const stackedChart = new google.visualization.ColumnChart(document.getElementById('stackedColumnChart'));
+            stackedChart.draw(stackedData, {
+                title: 'Stacked Column Chart',
+                isStacked: true  // This makes it a stacked chart
+            });
+
+            // 6. Donut Chart - Similar to pie chart but with a hole in the middle
+            const donutChart = new google.visualization.PieChart(document.getElementById('donutChart'));
+            donutChart.draw(columnData, {
+                title: 'Donut Chart',
+                pieHole: 0.4  // This creates the hole in the middle
+            });
+
+            // 7. Geo Chart - Shows data on a map
+            const geoData = new google.visualization.DataTable();
+            // Define the columns for geographical data
+            geoData.addColumn('string', 'Country');
+            geoData.addColumn('number', 'Value');
+            // Add the actual data rows
+            geoData.addRows([
+                ['United States', 100],
+                ['India', 80],
+                ['China', 90],
+                ['United Kingdom', 70],
+                ['Japan', 85]
+            ]);
+
+            // Create and draw the geo chart
+            const geoChart = new google.visualization.GeoChart(document.getElementById('geochart'));
+            geoChart.draw(geoData, {
+                title: 'Geo Chart',
+                region: 'world'  // Show the entire world map
+            });
+        }
+    </script>
+</body>
+</html>

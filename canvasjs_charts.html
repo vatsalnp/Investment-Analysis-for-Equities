@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CanvasJS Charts - Beginner's Guide</title>
+    <!-- Include CanvasJS library -->
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <style>
+        /* Basic styling for chart containers */
+        .chart-container {
+            width: 600px;
+            height: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        /* Add some spacing between charts */
+        .chart-container + .chart-container {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Create containers for each chart -->
+    <div class="chart-container" id="columnChart"></div>
+    <div class="chart-container" id="barChart"></div>
+    <div class="chart-container" id="lineChart"></div>
+    <div class="chart-container" id="pieChart"></div>
+    <div class="chart-container" id="areaChart"></div>
+    <div class="chart-container" id="stackedColumnChart"></div>
+    <div class="chart-container" id="donutChart"></div>
+    <div class="chart-container" id="candlestickChart"></div>
+    <div class="chart-container" id="bubbleChart"></div>
+
+    <script>
+        // Step 1: Define your data
+        // This is where you put your actual data
+        const data = {
+            // Categories are the labels on the x-axis
+            categories: ["Jan", "Feb", "Mar", "Apr", "May"],
+            // Values for the first series of data
+            values: [30, 45, 25, 60, 40],
+            // Values for the second series of data (used in stacked charts)
+            values2: [20, 35, 15, 50, 30],
+            // Values for the third series of data (used in bubble chart)
+            values3: [10, 25, 5, 40, 20]
+        };
+
+        // Step 2: Create and configure each chart
+        // 1. Column Chart - Shows data as vertical bars
+        const columnChart = new CanvasJS.Chart("columnChart", {
+            title: { text: "Column Chart" },
+            // Add animation for better user experience
+            animationEnabled: true,
+            data: [{
+                type: "column",
+                // Map the data to the format CanvasJS expects
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        columnChart.render();
+
+        // 2. Bar Chart - Shows data as horizontal bars
+        const barChart = new CanvasJS.Chart("barChart", {
+            title: { text: "Bar Chart" },
+            animationEnabled: true,
+            axisY: { title: "Values" },
+            data: [{
+                type: "bar",
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        barChart.render();
+
+        // 3. Line Chart - Shows data as connected points
+        const lineChart = new CanvasJS.Chart("lineChart", {
+            title: { text: "Line Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "line",
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        lineChart.render();
+
+        // 4. Pie Chart - Shows data as parts of a circle
+        const pieChart = new CanvasJS.Chart("pieChart", {
+            title: { text: "Pie Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        pieChart.render();
+
+        // 5. Area Chart - Shows data as filled area under a line
+        const areaChart = new CanvasJS.Chart("areaChart", {
+            title: { text: "Area Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "area",
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        areaChart.render();
+
+        // 6. Stacked Column Chart - Shows multiple series stacked on top of each other
+        const stackedColumnChart = new CanvasJS.Chart("stackedColumnChart", {
+            title: { text: "Stacked Column Chart" },
+            animationEnabled: true,
+            data: [
+                {
+                    type: "stackedColumn",
+                    name: "Series 1",
+                    dataPoints: data.categories.map((category, index) => ({
+                        label: category,
+                        y: data.values[index]
+                    }))
+                },
+                {
+                    type: "stackedColumn",
+                    name: "Series 2",
+                    dataPoints: data.categories.map((category, index) => ({
+                        label: category,
+                        y: data.values2[index]
+                    }))
+                }
+            ]
+        });
+        stackedColumnChart.render();
+
+        // 7. Donut Chart - Similar to pie chart but with a hole in the middle
+        const donutChart = new CanvasJS.Chart("donutChart", {
+            title: { text: "Donut Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "doughnut",
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: data.values[index]
+                }))
+            }]
+        });
+        donutChart.render();
+
+        // 8. Candlestick Chart - Used for showing price movements
+        const candlestickChart = new CanvasJS.Chart("candlestickChart", {
+            title: { text: "Candlestick Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "candlestick",
+                // Each data point needs 4 values: [open, high, low, close]
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    y: [
+                        data.values[index] - 5,  // Open
+                        data.values[index],      // High
+                        data.values[index] + 5,  // Low
+                        data.values[index] - 2   // Close
+                    ]
+                }))
+            }]
+        });
+        candlestickChart.render();
+
+        // 9. Bubble Chart - Shows data points with varying sizes
+        const bubbleChart = new CanvasJS.Chart("bubbleChart", {
+            title: { text: "Bubble Chart" },
+            animationEnabled: true,
+            data: [{
+                type: "bubble",
+                // Each data point needs x, y, and z coordinates
+                dataPoints: data.categories.map((category, index) => ({
+                    label: category,
+                    x: index,                    // X coordinate
+                    y: data.values[index],       // Y coordinate
+                    z: data.values2[index]       // Size of bubble
+                }))
+            }]
+        });
+        bubbleChart.render();
+    </script>
+</body>
+</html> 

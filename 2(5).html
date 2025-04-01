@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Read Text File with jQuery</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<input type="file" id="txtFileInput" accept=".txt">
+<div id="fileContent"></div>
+
+<script>
+$(document).ready(function() {
+  $('#txtFileInput').change(function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const text = e.target.result;
+        $('#fileContent').text(text);
+      };
+
+      reader.onerror = function() {
+        $('#fileContent').text('Error reading file.');
+      };
+
+      reader.readAsText(file);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

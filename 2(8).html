@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Read JSON File with jQuery</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<input type="file" id="jsonFileInput" accept=".json">
+<div id="jsonData"></div>
+
+<script>
+$(document).ready(function() {
+  $('#jsonFileInput').change(function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const json = JSON.parse(e.target.result);
+          displayJsonData(json);
+        } catch (error) {
+          $('#jsonData').html('<p>Error parsing JSON: Invalid JSON format.</p>');
+          console.error('JSON Parse Error:', error);
+        }
+      };
+
+      reader.onerror = function() {
+        $('#jsonData').html('<p>Error reading file.</p>');
+      };
+
+      reader.readAsText(file);
+    }
+  });
+
+  function displayJsonData(data) {
+    let html = '<h2>JSON Data:</h2><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    $('#jsonData').html(html);
+  }
+});
+</script>
+
+</body>
+</html>
